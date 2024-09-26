@@ -81,7 +81,8 @@ LOCAL_HEADER_LIBRARIES := \
     qti_audio_kernel_uapi \
     libagm_headers \
     libaudio_extn_headers \
-    libagmclient_headers
+    libagmclient_headers \
+    libarpal_headers
 
 LOCAL_SHARED_LIBRARIES := \
     libbase \
