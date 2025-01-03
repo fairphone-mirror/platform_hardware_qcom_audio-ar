@@ -221,6 +221,22 @@ endif
 # XML config file for memory logger
 PRODUCT_COPY_FILES += $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/$(DEVICE_SKU)/mem_logger_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mem_logger_config.xml
 
+# XML config file for fps Start
+PRODUCT_COPY_FILES += \
+    $(CONFIG_HAL_SRC_DIR)/audio_policy_configuration_fps.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_$(DEVICE_SKU)_qssi/audio_policy_configuration_fps.xml
+
+PRODUCT_COPY_FILES += \
+    $(CONFIG_PAL_SRC_DIR)/mixer_paths_volcano_mtp_fps.xml:$(CONFIG_SKU_OUT_DIR)/mixer_paths_volcano_mtp_fps.xml \
+    $(CONFIG_PAL_SRC_DIR)/resourcemanager_volcano_mtp_fps.xml:$(CONFIG_SKU_OUT_DIR)/resourcemanager_volcano_mtp_fps.xml \
+    $(CONFIG_PAL_SRC_DIR)/usecaseKvManager_fps.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usecaseKvManager_fps.xml
+
+PRODUCT_COPY_FILES += \
+    $(TOPDIR)vendor/qcom/proprietary/mm-audio/ar-acdb/acdbdata/volcano/volcano_mtp_fps/acdb_cal.acdb:vendor/etc/acdbdata/volcano_mtp_fps/MTP_acdb_cal.acdb \
+    $(TOPDIR)vendor/qcom/proprietary/mm-audio/ar-acdb/acdbdata/volcano/volcano_mtp_fps/workspaceFileXml.qwsp:vendor/etc/acdbdata/volcano_mtp_fps/MTP_workspaceFileXml.qwsp \
+    $(TOPDIR)vendor/qcom/proprietary/mm-audio/ar-acdb/acdbdata/volcano/volcano_mtp_fps/acoustic.txt:vendor/etc/acoustic.txt
+# XML config file for fps End
+
+
 # Reduce client buffer size for fast audio output tracks
 PRODUCT_PROPERTY_OVERRIDES += \
     af.fast_track_multiplier=1
