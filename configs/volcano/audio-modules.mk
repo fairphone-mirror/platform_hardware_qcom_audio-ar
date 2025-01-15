@@ -38,6 +38,7 @@ AUDIO_PAL += catf
 AUDIO_PAL += PalTest
 AUDIO_PAL += libaudiochargerlistener
 AUDIO_PAL += libhfp_pal
+AUDIO_PAL += aw882xx_cali
 
 # C2 Audio
 AUDIO_C2 := libqc2audio_base
@@ -71,6 +72,7 @@ AUDIO_MODULES += ftm_test_config
 AUDIO_MODULES += ftm_test_config_volcano-mtp-wsa883x_wcd939x-snd-card
 AUDIO_MODULES += ftm_test_config_volcano-cdp-wsa883x_wcd939x-snd-card
 AUDIO_MODULES += ftm_test_config_volcano-qrd-wsa883x-snd-card
+AUDIO_MODULES += ftm_test_config_volcano-mtp-fps
 AUDIO_MODULES += ftm_test_config_volcano-mtp-wsa883x_sku1-snd-card
 AUDIO_MODULES += ftm_test_config_volcano-mtp-wsa883x_wcd939x_sku1-snd-card
 AUDIO_MODULES += ftm_test_config_volcano-cdp-wsa883x_wcd939x_sku1-snd-card
