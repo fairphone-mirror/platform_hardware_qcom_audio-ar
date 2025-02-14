@@ -4882,6 +4882,17 @@ int StreamInPrimary::RouteStream(const std::set<audio_devices_t>& new_devices, b
                 AHAL_INFO("Setting custom key as %s", mPalInDevice[i].custom_config.custom_key);
             }
 
+            /*separate mic for mmi record test */
+            AHAL_DBG("%s  %d adevice->select_mic:%d", __func__, __LINE__, adevice->select_mic);
+            if (source_ == AUDIO_SOURCE_MIC && adevice->select_mic != SELECT_MIC_OFF) {
+                if(adevice->select_mic == SELECT_MIC_MAIN){
+                   strlcpy(mPalInDevice[i].custom_config.custom_key, "main", sizeof(mPalInDevice[i].custom_config.custom_key));
+                }else if(adevice->select_mic == SELECT_MIC_SUB){
+                   strlcpy(mPalInDevice[i].custom_config.custom_key, "sub", sizeof(mPalInDevice[i].custom_config.custom_key));
+                }
+                AHAL_INFO("Setting adevice->select_mic custom key as %s", mPalInDevice[i].custom_config.custom_key);
+            }
+
             /* HDR use case check */
             if ((get_hdr_mode() == AUDIO_RECORD_ARM_HDR) ||
                 ((get_hdr_mode() == AUDIO_RECORD_SPF_HDR) &&
@@ -5632,6 +5643,17 @@ StreamInPrimary::StreamInPrimary(audio_io_handle_t handle,
             strlcpy(mPalInDevice[i].custom_config.custom_key, "camcorder_landscape",
                     sizeof(mPalInDevice[i].custom_config.custom_key));
             AHAL_INFO("Setting custom key as %s", mPalInDevice[i].custom_config.custom_key);
+        }
+
+        /*separate mic for mmi record test */
+        AHAL_ERR("%s  %d adevice->select_mic:%d", __func__, __LINE__, adevice->select_mic);
+        if (source_ == AUDIO_SOURCE_MIC && adevice->select_mic != SELECT_MIC_OFF) {
+            if(adevice->select_mic == SELECT_MIC_MAIN){
+                strlcpy(mPalInDevice[i].custom_config.custom_key, "main", sizeof(mPalInDevice[i].custom_config.custom_key));
+            }else if(adevice->select_mic == SELECT_MIC_SUB){
+                strlcpy(mPalInDevice[i].custom_config.custom_key, "sub", sizeof(mPalInDevice[i].custom_config.custom_key));
+            }
+            AHAL_INFO("Setting adevice->select_mic custom key as %s", mPalInDevice[i].custom_config.custom_key);
         }
 
         usecase_ = GetInputUseCase(flags, source);
