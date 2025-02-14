@@ -265,6 +265,14 @@ enum {
     AUDIO_RECORD_SPF_HDR = 2,
 };
 
+enum {
+    SELECT_MIC_OFF = 0,
+    SELECT_MIC_MAIN = 1,
+    SELECT_MIC_SUB = 2,
+    SELECT_MIC_REAR = 3,
+    SELECT_MIC_FOUR = 4,
+};
+
 const uint32_t out_channel_mask_table[MAX_SUPPORT_OUT_CHANNELS][MAX_SUPPORT_OUT_CHANNELS] {
     {PAL_CHMAP_CHANNEL_FL},
     {PAL_CHMAP_CHANNEL_FL, PAL_CHMAP_CHANNEL_FR},

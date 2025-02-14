@@ -432,6 +432,7 @@ int AudioDevice::CreateAudioPatch(audio_patch_handle_t *handle,
     audio_io_handle_t io_handle = AUDIO_IO_HANDLE_NONE;
     audio_source_t input_source = AUDIO_SOURCE_DEFAULT;
     std::set<audio_devices_t> device_types;
+    bool force_switch_record_device = false;
 
     AHAL_DBG("source: %d, sink: %d, source type: %d, sink type %d", sources[0].type, sinks[0].type,
             sources[0].ext.device.type, sinks[0].ext.device.type);
@@ -531,11 +532,20 @@ create_patch:
         patch->sinks = sinks;
     }
 
+    AHAL_DBG("%s  %d adev_->select_mic:%d", __func__, __LINE__, adev_->select_mic);
+    AHAL_DBG("device_types %x, num device_types: %zu", AudioExtn::get_device_types(device_types), device_types.size());
+    for(auto device_type : device_types){
+        if (device_type == AUDIO_DEVICE_IN_BUILTIN_MIC || device_type == AUDIO_DEVICE_IN_BACK_MIC) {
+            AHAL_DBG(" AUDIO_DEVICE_IN_...");
+            force_switch_record_device = true;
+        }
+    }
+
     if (voice_ && !voice_->voice_.crsCall &&
         (patch_type == AudioPatch::PATCH_PLAYBACK || patch_type == AudioPatch::PATCH_DEVICE_LOOPBACK))
         ret = voice_->RouteStream(device_types);
     if (stream)
-        ret |= stream->RouteStream(device_types);
+        ret |= stream->RouteStream(device_types, force_switch_record_device);
 
     if (ret) {
         if (new_patch)
@@ -1557,6 +1567,19 @@ int AudioDevice::SetParameters(const char *kvpairs) {
                 }
             }
         }
+    }
+
+    /*separate mic for mmi record test */
+    ret = str_parms_get_str(parms, "select_mic", value, sizeof(value));
+    if (ret >= 0) {
+        if (strcmp(value, "main") == 0){
+            adev_->select_mic = SELECT_MIC_MAIN;
+        } else if (strcmp(value, "sub") == 0){
+            adev_->select_mic = SELECT_MIC_SUB;
+        } else {
+            adev_->select_mic = SELECT_MIC_OFF;
+        }
+        AHAL_DBG("%s  %d adev_->select_mic:%d", __func__, __LINE__, adev_->select_mic);
     }
 
     ret = str_parms_get_str(parms, "screen_state", value, sizeof(value));
