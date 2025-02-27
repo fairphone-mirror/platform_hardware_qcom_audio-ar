@@ -534,10 +534,12 @@ create_patch:
 
     AHAL_DBG("%s  %d adev_->select_mic:%d", __func__, __LINE__, adev_->select_mic);
     AHAL_DBG("device_types %x, num device_types: %zu", AudioExtn::get_device_types(device_types), device_types.size());
-    for(auto device_type : device_types){
-        if (device_type == AUDIO_DEVICE_IN_BUILTIN_MIC || device_type == AUDIO_DEVICE_IN_BACK_MIC) {
-            AHAL_DBG(" AUDIO_DEVICE_IN_...");
-            force_switch_record_device = true;
+    if (adev_->select_mic != SELECT_MIC_OFF) {
+        for(auto device_type : device_types){
+            if (device_type == AUDIO_DEVICE_IN_BUILTIN_MIC || device_type == AUDIO_DEVICE_IN_BACK_MIC) {
+                AHAL_DBG(" AUDIO_DEVICE_IN_...");
+                force_switch_record_device = true;
+            }
         }
     }
 
