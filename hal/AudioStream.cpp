@@ -4908,6 +4908,18 @@ int StreamInPrimary::RouteStream(const std::set<audio_devices_t>& new_devices, b
                 ((get_hdr_mode() == AUDIO_RECORD_SPF_HDR) &&
                 (source_ == AUDIO_SOURCE_CAMCORDER || source_ == AUDIO_SOURCE_MIC)))
                 setup_hdr_usecase(&mPalInDevice[i]);
+
+            /* audio record stereo & camrecode stereo use case check */
+            if ((source_ == AUDIO_SOURCE_MIC || source_ == AUDIO_SOURCE_CAMCORDER)
+                 && ((mPalInDeviceIds[i] == PAL_DEVICE_IN_HANDSET_MIC) || (mPalInDeviceIds[i] == PAL_DEVICE_IN_SPEAKER_MIC))) {
+                uint8_t channels = audio_channel_count_from_in_mask(config_.channel_mask);
+                if (channels == 2) {
+                    strlcpy(mPalInDevice[i].custom_config.custom_key, "dual-mic",
+                    sizeof(mPalInDevice[i].custom_config.custom_key));
+                    AHAL_INFO("Setting custom key as %s", mPalInDevice[i].custom_config.custom_key);
+                }
+             }
+
         }
 
         mAndroidInDevices = new_devices;
@@ -5649,11 +5661,11 @@ StreamInPrimary::StreamInPrimary(audio_io_handle_t handle,
             }
         }
 
-        if (source_ == AUDIO_SOURCE_CAMCORDER && adevice->cameraOrientation == CAMERA_DEFAULT) {
+        /*if (source_ == AUDIO_SOURCE_CAMCORDER && adevice->cameraOrientation == CAMERA_DEFAULT) {
             strlcpy(mPalInDevice[i].custom_config.custom_key, "camcorder_landscape",
                     sizeof(mPalInDevice[i].custom_config.custom_key));
             AHAL_INFO("Setting custom key as %s", mPalInDevice[i].custom_config.custom_key);
-        }
+        }*/
 
         /*separate mic for mmi record test */
         AHAL_ERR("%s  %d adevice->select_mic:%d", __func__, __LINE__, adevice->select_mic);
@@ -5682,6 +5694,17 @@ StreamInPrimary::StreamInPrimary(audio_io_handle_t handle,
             (source_ == AUDIO_SOURCE_CAMCORDER || source_ == AUDIO_SOURCE_MIC)) {
             setup_hdr_usecase(&mPalInDevice[i]);
         }
+
+        /* audio record stereo & camrecode stereo use case check */
+        if (usecase_ == USECASE_AUDIO_RECORD && (source_ == AUDIO_SOURCE_MIC || source_ == AUDIO_SOURCE_CAMCORDER)) {
+            uint8_t channels = audio_channel_count_from_in_mask(config_.channel_mask);
+            if (channels == 2) {
+                strlcpy(mPalInDevice[i].custom_config.custom_key, "dual-mic",
+                sizeof(mPalInDevice[i].custom_config.custom_key));
+                AHAL_INFO("Setting custom key as %s", mPalInDevice[i].custom_config.custom_key);
+            }
+         }
+
     }
 
     usecase_ = GetInputUseCase(flags, source);
