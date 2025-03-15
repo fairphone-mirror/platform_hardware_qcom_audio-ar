@@ -1434,6 +1434,7 @@ int AudioDevice::SetMode(const audio_mode_t mode) {
 
     AHAL_DBG("enter: mode: %d", mode);
     ret = voice_->SetMode(mode);
+    pal_set_audio_mode(mode);
     AHAL_DBG("Exit ret: %d", ret);
     return ret;
 }
