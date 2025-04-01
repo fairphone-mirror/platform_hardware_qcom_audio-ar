@@ -2626,6 +2626,28 @@ int StreamOutPrimary::RouteStream(const std::set<audio_devices_t>& new_devices, 
                        "hifi-filter_custom_key",
                        sizeof(mPalOutDevice[i].custom_config.custom_key));
             }
+
+            AHAL_DBG("SR-info StreamOutPrimary::RouteStream %s config_.sample_rate=%d", __func__, config_.sample_rate);
+            if (this->GetUseCase() == USECASE_AUDIO_PLAYBACK_VOIP) {
+                if (config_.sample_rate == 8000) {
+                    strlcpy(mPalOutDevice[i].custom_config.custom_key, "8K",
+                    sizeof(mPalOutDevice[i].custom_config.custom_key));
+                }
+                else if (config_.sample_rate == 16000) {
+                    strlcpy(mPalOutDevice[i].custom_config.custom_key, "16K",
+                    sizeof(mPalOutDevice[i].custom_config.custom_key));
+                }
+                else if (config_.sample_rate == 32000) {
+                    strlcpy(mPalOutDevice[i].custom_config.custom_key, "32K",
+                    sizeof(mPalOutDevice[i].custom_config.custom_key));
+                }
+                else if (config_.sample_rate == 48000) {
+                    strlcpy(mPalOutDevice[i].custom_config.custom_key, "48K",
+                    sizeof(mPalOutDevice[i].custom_config.custom_key));
+                }
+                AHAL_DBG("SR-info StreamOutPrimary::RouteStream %s setting SR for as sample rate=%d", __func__, config_.sample_rate);
+            }
+
         }
 
         std::shared_ptr<AudioDevice> adevice = AudioDevice::GetInstance();
@@ -4342,6 +4364,28 @@ StreamOutPrimary::StreamOutPrimary(
                     sizeof(mPalOutDevice[i].custom_config.custom_key));
             AHAL_INFO("Setting custom key as %s", mPalOutDevice[i].custom_config.custom_key);
         }
+
+        AHAL_DBG("SR-info StreamOutPrimary::StreamOutPrimary %s config_.sample_rate=%d", __func__, config_.sample_rate);
+        if (usecase_ == USECASE_AUDIO_PLAYBACK_VOIP) {
+            if (config_.sample_rate == 8000) {
+                strlcpy(mPalOutDevice[i].custom_config.custom_key, "8K",
+                sizeof(mPalOutDevice[i].custom_config.custom_key));
+            }
+            else if (config_.sample_rate == 16000) {
+                strlcpy(mPalOutDevice[i].custom_config.custom_key, "16K",
+                sizeof(mPalOutDevice[i].custom_config.custom_key));
+            }
+            else if (config_.sample_rate == 32000) {
+                strlcpy(mPalOutDevice[i].custom_config.custom_key, "32K",
+                sizeof(mPalOutDevice[i].custom_config.custom_key));
+            }
+            else if (config_.sample_rate == 48000) {
+                strlcpy(mPalOutDevice[i].custom_config.custom_key, "48K",
+                sizeof(mPalOutDevice[i].custom_config.custom_key));
+            }
+            AHAL_DBG("SR-info StreamOutPrimary::StreamOutPrimary %s setting SR for usecase_=%d as sample rate=%d", __func__, usecase_, config_.sample_rate);
+        }
+
     }
 
     if (flags & AUDIO_OUTPUT_FLAG_MMAP_NOIRQ) {
@@ -4876,11 +4920,11 @@ int StreamInPrimary::RouteStream(const std::set<audio_devices_t>& new_devices, b
             strlcpy(mPalInDevice[i].custom_config.custom_key, "",
                     sizeof(mPalInDevice[i].custom_config.custom_key));
 
-            if (source_ == AUDIO_SOURCE_CAMCORDER && adevice->cameraOrientation == CAMERA_DEFAULT) {
+            /*if (source_ == AUDIO_SOURCE_CAMCORDER && adevice->cameraOrientation == CAMERA_DEFAULT) {
                 strlcpy(mPalInDevice[i].custom_config.custom_key, "camcorder_landscape",
                         sizeof(mPalInDevice[i].custom_config.custom_key));
                 AHAL_INFO("Setting custom key as %s", mPalInDevice[i].custom_config.custom_key);
-            }
+            }*/
 
             /*separate mic for mmi record test */
             AHAL_DBG("%s  %d adevice->select_mic:%d", __func__, __LINE__, adevice->select_mic);
@@ -4909,6 +4953,27 @@ int StreamInPrimary::RouteStream(const std::set<audio_devices_t>& new_devices, b
                     AHAL_INFO("Setting custom key as %s", mPalInDevice[i].custom_config.custom_key);
                 }
              }
+
+        AHAL_DBG("SR-info StreamInPrimary::RouteStream %s source_=%d config_.sample_rate:%d",__func__, source_, config_.sample_rate);
+        if (source_ == AUDIO_SOURCE_VOICE_COMMUNICATION) {
+            if (config_.sample_rate == 8000) {
+                strlcpy(mPalInDevice[i].custom_config.custom_key, "8K",
+                sizeof(mPalInDevice[i].custom_config.custom_key));
+            }
+            else if (config_.sample_rate == 16000) {
+                strlcpy(mPalInDevice[i].custom_config.custom_key, "16K",
+                sizeof(mPalInDevice[i].custom_config.custom_key));
+            }
+            else if (config_.sample_rate == 32000) {
+                strlcpy(mPalInDevice[i].custom_config.custom_key, "32K",
+                sizeof(mPalInDevice[i].custom_config.custom_key));
+            }
+            else if (config_.sample_rate == 48000) {
+                strlcpy(mPalInDevice[i].custom_config.custom_key, "48K",
+                sizeof(mPalInDevice[i].custom_config.custom_key));
+            }
+            AHAL_DBG("SR-info StreamInPrimary::RouteStream %s setting SR for source_=%d as sample rate=%d", __func__, source_, config_.sample_rate);
+        }
 
         }
 
@@ -5694,6 +5759,27 @@ StreamInPrimary::StreamInPrimary(audio_io_handle_t handle,
                 AHAL_INFO("Setting custom key as %s", mPalInDevice[i].custom_config.custom_key);
             }
          }
+
+        AHAL_DBG("SR-info StreamInPrimary::StreamInPrimary %s usecase=%d config_.sample_rate:%d",__func__, usecase_, config_.sample_rate);
+        if (usecase_ == USECASE_AUDIO_RECORD_VOIP) {
+            if (config_.sample_rate == 8000) {
+                strlcpy(mPalInDevice[i].custom_config.custom_key, "8K",
+                sizeof(mPalInDevice[i].custom_config.custom_key));
+            }
+            else if (config_.sample_rate == 16000) {
+                strlcpy(mPalInDevice[i].custom_config.custom_key, "16K",
+                sizeof(mPalInDevice[i].custom_config.custom_key));
+            }
+            else if (config_.sample_rate == 32000) {
+                strlcpy(mPalInDevice[i].custom_config.custom_key, "32K",
+                sizeof(mPalInDevice[i].custom_config.custom_key));
+            }
+            else if (config_.sample_rate == 48000) {
+                strlcpy(mPalInDevice[i].custom_config.custom_key, "48K",
+                sizeof(mPalInDevice[i].custom_config.custom_key));
+            }
+            AHAL_DBG("SR-info StreamInPrimary::StreamInPrimary setting SR for usecase=%d as sample rate=%d", usecase_, config_.sample_rate);
+        }
 
     }
 
