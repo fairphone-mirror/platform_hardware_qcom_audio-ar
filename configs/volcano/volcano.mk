@@ -179,8 +179,11 @@ PRODUCT_COPY_FILES += \
 
 #XML Audio configuration files
 ifneq ($(TARGET_USES_AOSP_FOR_AUDIO), true)
+#PRODUCT_COPY_FILES += \
+#    $(CONFIG_HAL_SRC_DIR)/audio_policy_configuration.xml:$(CONFIG_SKU_OUT_DIR)/audio_policy_configuration.xml
+#FPS-1560: Using audio_policy_configuration_fps.xml instead of audio_policy_configuration.xml
 PRODUCT_COPY_FILES += \
-    $(CONFIG_HAL_SRC_DIR)/audio_policy_configuration.xml:$(CONFIG_SKU_OUT_DIR)/audio_policy_configuration.xml
+    $(CONFIG_HAL_SRC_DIR)/audio_policy_configuration_fps.xml:$(CONFIG_SKU_OUT_DIR)/audio_policy_configuration.xml
 
 #Audio configuration xml's common to Volcano family
 PRODUCT_COPY_FILES += \
