@@ -4824,6 +4824,7 @@ int StreamInPrimary::RouteStream(const std::set<audio_devices_t>& new_devices, b
     size_t payload_size = 0;
     dynamic_media_config_t dynamic_media_config;
     struct pal_channel_info ch_info = {0, {0}};
+    char voip_app_type_[30] = "";
     std::shared_ptr<AudioDevice> adevice = AudioDevice::GetInstance();
 
     pal_param_bta2dp_t *param_bt_a2dp_ptr = nullptr;
@@ -4947,6 +4948,49 @@ int StreamInPrimary::RouteStream(const std::set<audio_devices_t>& new_devices, b
                 AHAL_INFO("Setting adevice->select_mic custom key as %s", mPalInDevice[i].custom_config.custom_key);
             }
 
+            /*distinguis kinds of voip appliaction And set SR */
+            AHAL_DBG("StreamInPrimary::RouteStream  %d adevice->voip_app_type:%d config_.sample_rate:%d", __LINE__, adevice->voip_app_type, config_.sample_rate);
+            if (source_ == AUDIO_SOURCE_VOICE_COMMUNICATION && adevice->voip_app_type != VOIP_APP_TYPE_NONE) {
+                switch (adevice->voip_app_type) {
+                    case VOIP_APP_TYPE_WHATSAPP:
+                    case VOIP_APP_TYPE_TEAMS:
+                    case VOIP_APP_TYPE_LINE:
+                    case VOIP_APP_TYPE_WECHAT:
+                    case VOIP_APP_TYPE_FACEBOOK:
+                    case VOIP_APP_TYPE_TELEGRAM:
+                    case VOIP_APP_TYPE_SIGNAL:
+                        strlcpy(voip_app_type_, "voipapp1", sizeof(voip_app_type_));
+                        break;
+                    case VOIP_APP_TYPE_MEET:
+                        strlcpy(voip_app_type_, "voipapp2", sizeof(voip_app_type_));
+                        break;
+                    case VOIP_APP_TYPE_ZOOM:
+                        strlcpy(voip_app_type_, "voipapp3", sizeof(voip_app_type_));
+                        break;
+                    case VOIP_APP_TYPE_SKYPE:
+                    default:
+                        strlcpy(voip_app_type_, "", sizeof(voip_app_type_));
+                        AHAL_ERR("error unexpected voip_app_type of %d", adevice->voip_app_type);
+                }
+                if (config_.sample_rate == 8000) {
+                    strlcat(voip_app_type_, "_8K", sizeof(voip_app_type_));
+                    strlcpy(mPalInDevice[i].custom_config.custom_key, voip_app_type_, sizeof(mPalInDevice[i].custom_config.custom_key));
+                }
+                else if (config_.sample_rate == 16000) {
+                    strlcat(voip_app_type_, "_16K", sizeof(voip_app_type_));
+                    strlcpy(mPalInDevice[i].custom_config.custom_key, voip_app_type_, sizeof(mPalInDevice[i].custom_config.custom_key));
+                }
+                else if (config_.sample_rate == 32000) {
+                    strlcat(voip_app_type_, "_32K", sizeof(voip_app_type_));
+                    strlcpy(mPalInDevice[i].custom_config.custom_key, voip_app_type_, sizeof(mPalInDevice[i].custom_config.custom_key));
+                }
+                else if (config_.sample_rate == 48000) {
+                    strlcat(voip_app_type_, "_48K", sizeof(voip_app_type_));
+                    strlcpy(mPalInDevice[i].custom_config.custom_key, voip_app_type_, sizeof(mPalInDevice[i].custom_config.custom_key));
+                }
+            }
+            AHAL_DBG("SR-info StreamInPrimary::RouteStream %s setting customer voip type and SR : %S", __func__, mPalInDevice[i].custom_config.custom_key);
+
             /* HDR use case check */
             if ((get_hdr_mode() == AUDIO_RECORD_ARM_HDR) ||
                 ((get_hdr_mode() == AUDIO_RECORD_SPF_HDR) &&
@@ -4964,7 +5008,7 @@ int StreamInPrimary::RouteStream(const std::set<audio_devices_t>& new_devices, b
                 }
              }
 
-        AHAL_DBG("SR-info StreamInPrimary::RouteStream %s source_=%d config_.sample_rate:%d",__func__, source_, config_.sample_rate);
+        /*AHAL_DBG("SR-info StreamInPrimary::RouteStream %s source_=%d config_.sample_rate:%d",__func__, source_, config_.sample_rate);
         if (source_ == AUDIO_SOURCE_VOICE_COMMUNICATION) {
             if (config_.sample_rate == 8000) {
                 strlcpy(mPalInDevice[i].custom_config.custom_key, "8K",
@@ -4983,7 +5027,7 @@ int StreamInPrimary::RouteStream(const std::set<audio_devices_t>& new_devices, b
                 sizeof(mPalInDevice[i].custom_config.custom_key));
             }
             AHAL_DBG("SR-info StreamInPrimary::RouteStream %s setting SR for source_=%d as sample rate=%d", __func__, source_, config_.sample_rate);
-        }
+        }*/
 
         }
 
@@ -5556,6 +5600,7 @@ StreamInPrimary::StreamInPrimary(audio_io_handle_t handle,
     int ret = 0;
     readAt.tv_sec = 0;
     readAt.tv_nsec = 0;
+    char voip_app_type_[30] = "";
     void *st_handle = nullptr;
     pal_param_payload *payload = nullptr;
 
@@ -5743,6 +5788,49 @@ StreamInPrimary::StreamInPrimary(audio_io_handle_t handle,
             AHAL_INFO("Setting adevice->select_mic custom key as %s", mPalInDevice[i].custom_config.custom_key);
         }
 
+        /*distinguis kinds of voip appliaction And set SR design*/
+        AHAL_DBG("StreamInPrimary::StreamInPrimary  %d adevice->voip_app_type:%d config_.sample_rate:%d", __LINE__, adevice->voip_app_type, config_.sample_rate);
+        if (source_ == AUDIO_SOURCE_VOICE_COMMUNICATION && adevice->voip_app_type != VOIP_APP_TYPE_NONE) {
+            switch (adevice->voip_app_type) {
+                case VOIP_APP_TYPE_WHATSAPP:
+                case VOIP_APP_TYPE_TEAMS:
+                case VOIP_APP_TYPE_LINE:
+                case VOIP_APP_TYPE_WECHAT:
+                case VOIP_APP_TYPE_FACEBOOK:
+                case VOIP_APP_TYPE_TELEGRAM:
+                case VOIP_APP_TYPE_SIGNAL:
+                    strlcpy(voip_app_type_, "voipapp1", sizeof(voip_app_type_));
+                    break;
+                case VOIP_APP_TYPE_MEET:
+                    strlcpy(voip_app_type_, "voipapp2", sizeof(voip_app_type_));
+                    break;
+                case VOIP_APP_TYPE_ZOOM:
+                    strlcpy(voip_app_type_, "voipapp3", sizeof(voip_app_type_));
+                    break;
+                case VOIP_APP_TYPE_SKYPE:
+                default:
+                    strlcpy(voip_app_type_, "", sizeof(voip_app_type_));
+                    AHAL_ERR("error unexpected voip_app_type of %d", adevice->voip_app_type);
+            }
+            if (config_.sample_rate == 8000) {
+                strlcat(voip_app_type_, "_8K", sizeof(voip_app_type_));
+                strlcpy(mPalInDevice[i].custom_config.custom_key, voip_app_type_, sizeof(mPalInDevice[i].custom_config.custom_key));
+            }
+            else if (config_.sample_rate == 16000) {
+                strlcat(voip_app_type_, "_16K", sizeof(voip_app_type_));
+                strlcpy(mPalInDevice[i].custom_config.custom_key, voip_app_type_, sizeof(mPalInDevice[i].custom_config.custom_key));
+            }
+            else if (config_.sample_rate == 32000) {
+                strlcat(voip_app_type_, "_32K", sizeof(voip_app_type_));
+                strlcpy(mPalInDevice[i].custom_config.custom_key, voip_app_type_, sizeof(mPalInDevice[i].custom_config.custom_key));
+            }
+            else if (config_.sample_rate == 48000) {
+                strlcat(voip_app_type_, "_48K", sizeof(voip_app_type_));
+                strlcpy(mPalInDevice[i].custom_config.custom_key, voip_app_type_, sizeof(mPalInDevice[i].custom_config.custom_key));
+            }
+        }
+        AHAL_DBG("StreamInPrimary::StreamInPrimary　setting customer voip type and SR : %S",  mPalInDevice[i].custom_config.custom_key);
+
         usecase_ = GetInputUseCase(flags, source);
         if (usecase_ == USECASE_AUDIO_RECORD_LOW_LATENCY ||
             usecase_ == USECASE_AUDIO_RECORD_MMAP) {
@@ -5770,7 +5858,7 @@ StreamInPrimary::StreamInPrimary(audio_io_handle_t handle,
             }
          }
 
-        AHAL_DBG("SR-info StreamInPrimary::StreamInPrimary %s usecase=%d config_.sample_rate:%d",__func__, usecase_, config_.sample_rate);
+        /*AHAL_DBG("SR-info StreamInPrimary::StreamInPrimary %s usecase=%d config_.sample_rate:%d",__func__, usecase_, config_.sample_rate);
         if (usecase_ == USECASE_AUDIO_RECORD_VOIP) {
             if (config_.sample_rate == 8000) {
                 strlcpy(mPalInDevice[i].custom_config.custom_key, "8K",
@@ -5789,7 +5877,7 @@ StreamInPrimary::StreamInPrimary(audio_io_handle_t handle,
                 sizeof(mPalInDevice[i].custom_config.custom_key));
             }
             AHAL_DBG("SR-info StreamInPrimary::StreamInPrimary setting SR for usecase=%d as sample rate=%d", usecase_, config_.sample_rate);
-        }
+        }*/
 
     }
 

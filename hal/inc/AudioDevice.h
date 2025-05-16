@@ -96,6 +96,29 @@ typedef enum {
     ROTATION_270 = 270,
 } rotation_t;
 
+
+enum {
+    SELECT_MIC_OFF = 0,
+    SELECT_MIC_MAIN = 1,
+    SELECT_MIC_SUB = 2,
+    SELECT_MIC_REAR = 3,
+    SELECT_MIC_FOUR = 4,
+};
+
+enum {
+    VOIP_APP_TYPE_NONE = 0,
+    VOIP_APP_TYPE_WECHAT = 1,
+    VOIP_APP_TYPE_WHATSAPP = 2,
+    VOIP_APP_TYPE_ZOOM = 3,
+    VOIP_APP_TYPE_TEAMS = 4,
+    VOIP_APP_TYPE_SKYPE = 5,
+    VOIP_APP_TYPE_LINE = 6,
+    VOIP_APP_TYPE_FACEBOOK = 7,
+    VOIP_APP_TYPE_TELEGRAM = 8,
+    VOIP_APP_TYPE_SIGNAL = 9,
+    VOIP_APP_TYPE_MEET = 10,
+};
+
 typedef struct xml_userdata_t {
     char data_buf[XML_READ_BUFFER_SIZE];
     size_t offs;
@@ -214,6 +237,7 @@ public:
     int  hdr_sample_rate = 0;
     int cameraOrientation = CAMERA_DEFAULT;
     int select_mic = SELECT_MIC_OFF;
+    int voip_app_type = VOIP_APP_TYPE_NONE;
     bool hac_voip = false;
     bool usb_input_dev_enabled = false;
     bool usb_out_headset = false;

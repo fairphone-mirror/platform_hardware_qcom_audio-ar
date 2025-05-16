@@ -1585,6 +1585,13 @@ int AudioDevice::SetParameters(const char *kvpairs) {
         AHAL_DBG("%s  %d adev_->select_mic:%d", __func__, __LINE__, adev_->select_mic);
     }
 
+    /*distinguis kinds of voip appliaction */
+    ret = str_parms_get_int(parms, "voip_app_type", &val);
+    if (ret >= 0) {
+        adev_->voip_app_type = val;
+        AHAL_DBG("%s  %d adev_->voip_app_type:%d", __func__, __LINE__, adev_->voip_app_type);
+    }
+
     ret = str_parms_get_str(parms, "screen_state", value, sizeof(value));
     if (ret >= 0) {
         pal_param_screen_state_t param_screen_st;
