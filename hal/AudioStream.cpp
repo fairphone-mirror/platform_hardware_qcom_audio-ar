@@ -2956,10 +2956,10 @@ exit:
         if (ret != 0) {
             AHAL_ERR("Failed to get mmap position %d", ret);
         } else {
-            AHAL_INFO("mmap position is %d", position.position_frames);
+            AHAL_VERBOSE("mmap position is %d", position.position_frames);
             signed_frames = position.position_frames -
               (MMAP_PLATFORM_DELAY * (streamAttributes_.out_media_config.sample_rate) / 1000000LL);
-            AHAL_INFO("mmap signed frames %llu", signed_frames);
+            AHAL_VERBOSE("mmap signed frames %llu", signed_frames);
         }
     }
 
