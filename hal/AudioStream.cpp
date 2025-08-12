@@ -4931,11 +4931,12 @@ int StreamInPrimary::RouteStream(const std::set<audio_devices_t>& new_devices, b
             strlcpy(mPalInDevice[i].custom_config.custom_key, "",
                     sizeof(mPalInDevice[i].custom_config.custom_key));
 
-            /*if (source_ == AUDIO_SOURCE_CAMCORDER && adevice->cameraOrientation == CAMERA_DEFAULT) {
+            if ((source_ == AUDIO_SOURCE_CAMCORDER && adevice->cameraOrientation == CAMERA_DEFAULT) ||
+                    adevice->fp_camera_app) { // FPS-3295 add for camera app
                 strlcpy(mPalInDevice[i].custom_config.custom_key, "camcorder_landscape",
                         sizeof(mPalInDevice[i].custom_config.custom_key));
                 AHAL_INFO("Setting custom key as %s", mPalInDevice[i].custom_config.custom_key);
-            }*/
+            }
 
             /*separate mic for mmi record test */
             AHAL_DBG("%s  %d adevice->select_mic:%d", __func__, __LINE__, adevice->select_mic);
@@ -5771,11 +5772,12 @@ StreamInPrimary::StreamInPrimary(audio_io_handle_t handle,
             }
         }
 
-        /*if (source_ == AUDIO_SOURCE_CAMCORDER && adevice->cameraOrientation == CAMERA_DEFAULT) {
+        if ((source_ == AUDIO_SOURCE_CAMCORDER && adevice->cameraOrientation == CAMERA_DEFAULT) ||
+                adevice->fp_camera_app) { // FPS-3295 add for camera app
             strlcpy(mPalInDevice[i].custom_config.custom_key, "camcorder_landscape",
                     sizeof(mPalInDevice[i].custom_config.custom_key));
             AHAL_INFO("Setting custom key as %s", mPalInDevice[i].custom_config.custom_key);
-        }*/
+        }
 
         /*separate mic for mmi record test */
         AHAL_ERR("%s  %d adevice->select_mic:%d", __func__, __LINE__, adevice->select_mic);

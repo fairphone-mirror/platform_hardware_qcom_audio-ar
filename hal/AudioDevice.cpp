@@ -1572,6 +1572,18 @@ int AudioDevice::SetParameters(const char *kvpairs) {
         }
     }
 
+    // FPS-3295 add for camera app begin
+    ret = str_parms_get_str(parms, "fp_camera_app", value, sizeof(value));
+    if (ret >= 0) {
+        if (strcmp(value, "true") == 0){
+            adev_->fp_camera_app = true;
+        } else {
+            adev_->fp_camera_app = false;
+        }
+        AHAL_DBG("%s  %d adev_->fp_camera_app:%d", __func__, __LINE__, adev_->fp_camera_app);
+    }
+    // FPS-3295 add for camera app end
+
     /*separate mic for mmi record test */
     ret = str_parms_get_str(parms, "select_mic", value, sizeof(value));
     if (ret >= 0) {

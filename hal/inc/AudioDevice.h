@@ -237,6 +237,7 @@ public:
     int  hdr_sample_rate = 0;
     int cameraOrientation = CAMERA_DEFAULT;
     int select_mic = SELECT_MIC_OFF;
+    bool fp_camera_app = false;
     int voip_app_type = VOIP_APP_TYPE_NONE;
     bool hac_voip = false;
     bool usb_input_dev_enabled = false;
