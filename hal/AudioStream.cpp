@@ -2157,7 +2157,8 @@ int StreamOutPrimary::GetMmapPosition(struct audio_mmap_position *position)
     if (pal_stream_handle_ == nullptr) {
         AHAL_ERR("error pal handle is null\n");
         stream_mutex_.unlock();
-        return -EINVAL;
+        //return -EINVAL;
+        return -ENODATA; //FPSW-556 VtsHalAudioV7_1TargetTest fail
     }
 
     ret = pal_stream_get_mmap_position(pal_stream_handle_, &pal_mmap_pos);
@@ -4580,7 +4581,8 @@ int StreamInPrimary::GetMmapPosition(struct audio_mmap_position *position)
     if (pal_stream_handle_ == nullptr) {
         AHAL_ERR("error pal handle is null\n");
         stream_mutex_.unlock();
-        return -EINVAL;
+        //return -EINVAL;
+        return -ENODATA; //FPSW-556 VtsHalAudioV7_1TargetTest fail
     }
 
     ret = pal_stream_get_mmap_position(pal_stream_handle_, &pal_mmap_pos);
