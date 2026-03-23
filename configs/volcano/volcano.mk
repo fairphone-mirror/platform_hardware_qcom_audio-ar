@@ -234,9 +234,6 @@ PRODUCT_COPY_FILES += \
     $(CONFIG_PAL_SRC_DIR)/resourcemanager_volcano_mtp_fps.xml:$(CONFIG_SKU_OUT_DIR)/resourcemanager_volcano_mtp_fps.xml \
     $(CONFIG_PAL_SRC_DIR)/usecaseKvManager_fps.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usecaseKvManager_fps.xml
 
-PRODUCT_COPY_FILES += \
-    $(TOPDIR)vendor/qcom/proprietary/mm-audio/ar-acdb/acdbdata/volcano/volcano_mtp_fps/acdb_cal.acdb:vendor/etc/acdbdata/volcano_mtp_fps/MTP_acdb_cal.acdb \
-    $(TOPDIR)vendor/qcom/proprietary/mm-audio/ar-acdb/acdbdata/volcano/volcano_mtp_fps/workspaceFileXml.qwsp:vendor/etc/acdbdata/volcano_mtp_fps/MTP_workspaceFileXml.qwsp \
     $(TOPDIR)vendor/qcom/proprietary/mm-audio/ar-acdb/acdbdata/volcano/volcano_mtp_fps/acoustic.txt:vendor/etc/acoustic.txt \
     $(TOPDIR)vendor/qcom/proprietary/mm-audio/ar-acdb/acdbdata/volcano/volcano_mtp_fps/audio_ver:vendor/etc/audio_ver
 # XML config file for fps End
