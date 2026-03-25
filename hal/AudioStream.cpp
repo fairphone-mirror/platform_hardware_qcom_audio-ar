@@ -5011,6 +5011,14 @@ int StreamInPrimary::RouteStream(const std::set<audio_devices_t>& new_devices, b
                 }
              }
 
+            /* FPS-3680 Change audio_route to dual-mic for whatsApp begin */
+            if (adevice->fps_DualMic_app){
+                strlcpy(mPalInDevice[i].custom_config.custom_key, "dual-mic",
+                sizeof(mPalInDevice[i].custom_config.custom_key));
+                AHAL_INFO("Setting custom key as %s", mPalInDevice[i].custom_config.custom_key);
+            }
+            /* FPS-3680 Change audio_route to dual-mic for whatsApp end */
+
         /*AHAL_DBG("SR-info StreamInPrimary::RouteStream %s source_=%d config_.sample_rate:%d",__func__, source_, config_.sample_rate);
         if (source_ == AUDIO_SOURCE_VOICE_COMMUNICATION) {
             if (config_.sample_rate == 8000) {
@@ -5846,6 +5854,14 @@ StreamInPrimary::StreamInPrimary(audio_io_handle_t handle,
                 AHAL_INFO("Setting custom key as %s", mPalInDevice[i].custom_config.custom_key);
            }
         }
+
+        /* FPS-3680 Change audio_route to dual-mic for whatsApp begin */
+        if (adevice->fps_DualMic_app){
+            strlcpy(mPalInDevice[i].custom_config.custom_key, "dual-mic",
+            sizeof(mPalInDevice[i].custom_config.custom_key));
+            AHAL_INFO("Setting custom key as %s", mPalInDevice[i].custom_config.custom_key);
+        }
+        /* FPS-3680 Change audio_route to dual-mic for whatsApp end */
 
         if ((get_hdr_mode() == AUDIO_RECORD_SPF_HDR) &&
             (source_ == AUDIO_SOURCE_CAMCORDER || source_ == AUDIO_SOURCE_MIC)) {

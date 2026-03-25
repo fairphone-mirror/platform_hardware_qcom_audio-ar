@@ -1584,6 +1584,18 @@ int AudioDevice::SetParameters(const char *kvpairs) {
     }
     // FPS-3295 add for camera app end
 
+    // FPS-3680 Change audio_route to dual-mic begin
+    ret = str_parms_get_str(parms, "fps_DualMic_app", value, sizeof(value));
+    if (ret >= 0) {
+        if (strcmp(value, "true") == 0){
+            adev_->fps_DualMic_app = true;
+        } else {
+            adev_->fps_DualMic_app = false;
+        }
+        AHAL_DBG("%s  %d adev_->fps_DualMic_app:%d", __func__, __LINE__, adev_->fps_DualMic_app);
+    }
+    // FPS-3680 Change audio_route to dual-mic end
+
     /*separate mic for mmi record test */
     ret = str_parms_get_str(parms, "select_mic", value, sizeof(value));
     if (ret >= 0) {
